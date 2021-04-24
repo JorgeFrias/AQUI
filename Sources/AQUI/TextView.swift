@@ -81,8 +81,8 @@ public struct TextView: View {
 
     private let platform: _PlatformView
 
-    public init(text: Binding<String>) {
-        self.platform = _PlatformView(text: text)
+    public init(text: Binding<String>, placeholder: String?) {
+        self.platform = _PlatformView(text: text, placeholder: placeholder)
     }
 
     public var body: some View { platform }
@@ -197,6 +197,7 @@ extension UITraitCollection {
 @available (watchOS, unavailable)
 fileprivate struct _UIKitTextView: UIViewRepresentable {
     @Binding var text: String
+    var placeholder: String?
     @State var justified: Bool = false
 
     func makeUIView(context: Context) -> UITextView {
@@ -212,6 +213,7 @@ fileprivate struct _UIKitTextView: UIViewRepresentable {
 
     func updateUIView(_ uiView: UITextView, context: Context) {
         uiView.text = text
+        uiView.placeholder = placeholder
         uiView.textColor = .label
 
         let traits = UITraitCollection(traitsFrom: [
@@ -260,6 +262,7 @@ fileprivate struct _UIKitTextView: UIViewRepresentable {
 @available (watchOS, unavailable)
 fileprivate struct _AppKitTextView: NSViewRepresentable {
     @Binding var text: String
+    var placeholder: String?
 
     func makeNSView(context: Context) -> NSTextView {
         let view = NSTextView()
